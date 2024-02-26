@@ -1,24 +1,32 @@
-import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
+import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { Typography } from "@mui/material";
 import BasicSelect from "./Select";
 import { useState } from "react";
+import { NumericFormat } from 'react-number-format';
 
 function Form({}){
     const [selectedAssetType, setSelectedAssetType] = useState(null);
     const [selectedLoanType, setSelectedLoanType] = useState(null);
-    const [loanAmount , setLoanAmount] = useState(0);
+    const [loanAmount , setLoanAmount] = useState(null);
     const [recourse,  setRecourse] = useState(null);
     
     const resetValues = () => {
         setSelectedAssetType(null)
     }
+    const CalculateFieldProps = {
+        
+        // sx: {
+
+        //     borderRadius: "80px",
+        //     border: "1px solid #e5e5e5",
+        // }
+    };
 
     const handleCalculate = () => {
         if(!selectedAssetType){
             // show snackbar
             return;
         }
-        console.log(loanTypes[selectedLoanType]);
     }
     return(
         <Box className="form"> 
@@ -67,21 +75,13 @@ function Form({}){
                     >
                     Loan Amount
                     </Typography>
-                    <FormControl fullWidth sx={{ 
-                        borderRadius: "8px",
-                        border: "1px solid #e5e5e5",
-                        borderRadius: "8px",
-                        border: "1px solid #e5e5e5",
-                        mb: "24px",
-                    }}>
-                        <OutlinedInput
-                        type = "currency"
-                        sx={{ 
-                            borderRadius: "8px",
-                        }}
-                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                        />
-                    </FormControl>
+                    
+                    <NumericFormat 
+                        thousandSeparator="," 
+                        value={loanAmount} 
+                        customInput={TextField} 
+                        {...CalculateFieldProps}
+                    />
                 </Box>
                 <Box className="recourse">
                     <Typography 
@@ -94,7 +94,7 @@ function Form({}){
                     >Are you able to accept some recourse?</Typography>
                     <Box className="button-group" sx={{
                         display: "flex",
-                        gap: "12px",
+                        gap: "10px",
                         flexWrap: "wrap"
                     }}>
                         {
@@ -110,7 +110,8 @@ function Form({}){
                                   fontWeight:"500",
                                   fontSize:"14px",
                                   p: "12px 16px",
-                                  borderColor: "#EAE2D6"
+                                  borderColor: "#EAE2D6",
+                                  borderRadius: "8px"
                               }}>{label}</Button>
                             )
                           )  
@@ -118,10 +119,7 @@ function Form({}){
                     </Box>
                 </Box>
             </Box>
-            <Box>
-                {selectedAssetType && <Button variant="contained" fullWidth onClick={() => handleCalculate()} >Calculate</Button>}
-                
-            </Box>
+            {(selectedAssetType && selectedLoanType) && <Button variant="contained" fullWidth onClick={() => handleCalculate()} >Calculate</Button>}            
         </Box>
     )
 }
