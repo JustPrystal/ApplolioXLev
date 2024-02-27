@@ -13,9 +13,22 @@ const theme = createTheme({
       primary: '#173A5E',
       secondary: '#46505A',
     },
+    primary: {
+      main: "#003330",
+      contrastText: '#ffffff',
+      hover: "#005953",
+    },
+    secondary: {
+      main: "#404040",
+      contrastText: '#ffffff',
+      hover: "#005953",
+    },
     action: {
       active: '#001E3C',
     }, 
+  },
+  typography: {
+    fontFamily: "IBM Plex Sans, Alv",
   },
 });
 

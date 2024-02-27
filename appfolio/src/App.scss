@@ -1,3 +1,11 @@
+.app{
+    min-height: 100vh;
+    overflow: hidden;
+    .sidebar{
+        height: calc(100vh - 168px)
+    }
+}
+
 //fonts
 @import "./fonts/_fonts";
 

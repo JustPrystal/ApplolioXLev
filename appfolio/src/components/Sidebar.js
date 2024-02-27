@@ -4,21 +4,25 @@ import Form from "./Form"
 
 function Sidebar({ data }){
     const { formDataPrefill } = data;
+    // console.log(formDataPrefill)
     return(
         <Box className="sidebar" 
         sx = {{
             pt : "24px",
             px : "32px",
             backgroundColor: "#fbfaf8",
-            maxWidth: "516px"
+            maxWidth: "516px",
+            width: "100%",
+            borderRight: "1px solid #eae2d6",
         }}
         >
             <Typography 
             sx = {{
-                fontFamily: "alv-sb",
+                fontFamily: "alv-md",
                 fontSize: "28px",
                 pb: "18px",
                 mb: "24px",
+                lineHeight: "0.9",
                 borderBottom: "1px solid #eae2d6"
             }}
             >Browse real-time market terms</Typography>

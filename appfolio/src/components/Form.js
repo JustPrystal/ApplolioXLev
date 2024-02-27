@@ -2,24 +2,19 @@ import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Te
 import { Typography } from "@mui/material";
 import BasicSelect from "./Select";
 import { useState } from "react";
-import { NumericFormat } from 'react-number-format';
+import { useTheme } from '@mui/material/styles';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-function Form({}){
+function Form({data}){
+    const theme = useTheme();
+
     const [selectedAssetType, setSelectedAssetType] = useState(null);
     const [selectedLoanType, setSelectedLoanType] = useState(null);
     const [loanAmount , setLoanAmount] = useState(null);
     const [recourse,  setRecourse] = useState(null);
     
-    const resetValues = () => {
-        setSelectedAssetType(null)
-    }
-    const CalculateFieldProps = {
-        
-        // sx: {
-
-        //     borderRadius: "80px",
-        //     border: "1px solid #e5e5e5",
-        // }
+    const thousandSeparatedFormat = (value) => {
+        return Number(value).toLocaleString();
     };
 
     const handleCalculate = () => {
@@ -43,9 +38,9 @@ function Form({}){
                 >Refine Calculations</Typography>
                 <Typography 
                 sx = {{
-                    fontFamily: "Inter",
                     fontSize: "14px",
                     color: "#737373",
+                    letterSpacing: "-0.5px",
                 }}
                 >Use this to automatically update prequalified lending terms.</Typography>
             </Box>
@@ -66,60 +61,124 @@ function Form({}){
                     />
                     <Typography
                     sx={{
-                        fontFamily: "Inter",
                         fontSize: "14px",
                         color: "black",
+                        letterSpacing: "-0.5px",
                         mb: "6px",
                         fontWeight: "500"
                     }}
                     >
                     Loan Amount
                     </Typography>
-                    
-                    <NumericFormat 
-                        thousandSeparator="," 
-                        value={loanAmount} 
-                        customInput={TextField} 
-                        {...CalculateFieldProps}
-                    />
+                    <FormControl fullWidth sx={{  
+                        borderRadius: "8px", 
+                        border: "1px solid #e5e5e5", 
+                        mb: "24px", 
+                        bgcolor: "#fff",
+                    }}> 
+                        <OutlinedInput 
+                        value={thousandSeparatedFormat(loanAmount)}
+                        onChange={(event)=>{ setLoanAmount(event.target.value.replace(/\D/g, '')) }}
+                        sx={{  
+                            borderRadius: "8px", 
+                            p: "10.5px 14px",
+                            fontSize : "16px",
+                            ">input": {
+                              padding: "0"
+                            },
+                            ">fieldset": {
+                              border: "0"
+                            },
+                        }} 
+                            startAdornment={<InputAdornment position="start">$</InputAdornment>} 
+                        /> 
+                    </FormControl> 
+
                 </Box>
                 <Box className="recourse">
                     <Typography 
                     sx = {{
-                        fontFamily: "Inter",
+
                         pt: "24px",
+                        letterSpacing: "-0.5px",
                         fontSize: "16px",
                         pb: " 12px",
                     }}
                     >Are you able to accept some recourse?</Typography>
                     <Box className="button-group" sx={{
                         display: "flex",
-                        gap: "10px",
-                        flexWrap: "wrap"
+                        gap: "12px",
+                        flexWrap: "wrap",
+                        mb: "16px"
                     }}>
                         {
                           recourses && Object.entries(recourses).map(([key , {label, type}])=>(
                               <Button 
-                                value={type}
-                                key={key} 
-                                variant="outlined"
+                                value={type.toLowerCase()}
+                                key={key}
+                                color="secondary" 
+                                variant={recourse === key ? "contained" : "outlined"}
+                                onClick={(event) => {
+                                    setRecourse(key)
+                                }}
                                 sx={{
-                                  color: "#404040",
-                                  fontFamily: "inter",
+                                  letterSpacing: "-0.5px",
                                   textTransform: "Capitalize",
                                   fontWeight:"500",
                                   fontSize:"14px",
                                   p: "12px 16px",
+                                  lineHeight: "1.3",
                                   borderColor: "#EAE2D6",
-                                  borderRadius: "8px"
-                              }}>{label}</Button>
+                                  borderRadius: "8px",
+                                  border: recourse === key && `1px solid ${theme.palette.secondary.main}`
+                                }}>{label}</Button>
                             )
                           )  
                         }
                     </Box>
                 </Box>
             </Box>
-            {(selectedAssetType && selectedLoanType) && <Button variant="contained" fullWidth onClick={() => handleCalculate()} >Calculate</Button>}            
+            <Box className="calculate" sx={{
+                borderBottom: "1px solid #eae2d6",
+            }}>
+                {!(selectedAssetType && selectedLoanType && loanAmount && recourse) && <Button variant="outlined" 
+                sx={{
+                    color: "#404040",
+                    borderRadius: "8px", 
+                    border: "1px solid #d9d9d9", 
+                    fontSize: "16px",
+                    lineHeight: "1.4",
+                    bgcolor: "#fff",
+                    textTransform: "capitalize",
+                    letterSpacing: "-0.5px",
+                    mb: "24px",
+                    p: "10px 18px",
+                    maxHeight: "44px",
+                    height: "100%",
+
+                }} 
+                fullWidth onClick={() => handleCalculate()} >Calculate</Button>}            
+            </Box>
+            <Box className="next-step">
+                <Button className="get-financing" fullWidth color="primary"
+                variant="contained"
+                sx={{
+                    mt: "24px",
+                    color: theme.palette.primary,
+                    borderRadius: "8px", 
+                    maxHeight: "44px",
+                    height: "100%",
+                    border: `1px solid ${theme.palette.primary}`, 
+                    fontSize: "16px",
+                    lineHeight: "1.4",
+                    textTransform: "capitalize",
+                    letterSpacing: "-0.5px",
+                    fontFamily: "inherit",
+                    p: "10px 18px",
+                }}>get financing 
+                <ArrowForwardIcon sx={{pl:"5px"}}/>
+                </Button>
+            </Box>
         </Box>
     )
 }
