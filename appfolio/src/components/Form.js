@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useTheme } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-function Form({data}){
+function Form({data, updateStep, step}){
     const theme = useTheme();
 
     const [selectedAssetType, setSelectedAssetType] = useState(null);
-    const [selectedLoanType, setSelectedLoanType] = useState(null);
+    const [selectedLoanType, setSelectedLoanType] = useState(data.loanType);
     const [loanAmount , setLoanAmount] = useState(null);
     const [recourse,  setRecourse] = useState(null);
     
@@ -22,6 +22,7 @@ function Form({data}){
             // show snackbar
             return;
         }
+        updateStep()
     }
     return(
         <Box className="form"> 
@@ -116,7 +117,7 @@ function Form({data}){
                               <Button 
                                 value={type.toLowerCase()}
                                 key={key}
-                                color="secondary" 
+                                color="primary" 
                                 variant={recourse === key ? "contained" : "outlined"}
                                 onClick={(event) => {
                                     setRecourse(key)
@@ -130,6 +131,7 @@ function Form({data}){
                                   lineHeight: "1.3",
                                   borderColor: "#EAE2D6",
                                   borderRadius: "8px",
+                                  color: recourse === key ? "#ffffff" : "#404040",
                                   border: recourse === key && `1px solid ${theme.palette.secondary.main}`
                                 }}>{label}</Button>
                             )
@@ -141,7 +143,9 @@ function Form({data}){
             <Box className="calculate" sx={{
                 borderBottom: "1px solid #eae2d6",
             }}>
-                {!(selectedAssetType && selectedLoanType && loanAmount && recourse) && <Button variant="outlined" 
+                <Button  
+                disabled={!selectedAssetType || !selectedLoanType || !loanAmount || !recourse} 
+                variant="outlined" 
                 sx={{
                     color: "#404040",
                     borderRadius: "8px", 
@@ -157,16 +161,21 @@ function Form({data}){
                     height: "100%",
 
                 }} 
-                fullWidth onClick={() => handleCalculate()} >Calculate</Button>}            
+                fullWidth 
+                onClick={() => handleCalculate()} 
+                >Calculate</Button>           
             </Box>
-            <Box className="next-step">
+            {
+                step == 2 && <Box className="next-step">
                 <Button className="get-financing" fullWidth color="primary"
                 variant="contained"
+                onClick={updateStep}
                 sx={{
                     mt: "24px",
                     color: theme.palette.primary,
                     borderRadius: "8px", 
                     maxHeight: "44px",
+                    mb: "24px",
                     height: "100%",
                     border: `1px solid ${theme.palette.primary}`, 
                     fontSize: "16px",
@@ -179,6 +188,7 @@ function Form({data}){
                 <ArrowForwardIcon sx={{pl:"5px"}}/>
                 </Button>
             </Box>
+            }
         </Box>
     )
 }

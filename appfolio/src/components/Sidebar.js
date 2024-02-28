@@ -2,9 +2,8 @@ import { Box } from "@mui/material";
 import { Typography } from "@mui/material";
 import Form from "./Form"
 
-function Sidebar({ data }){
+function Sidebar({ data, updateStep, step }){
     const { formDataPrefill } = data;
-    // console.log(formDataPrefill)
     return(
         <Box className="sidebar" 
         sx = {{
@@ -26,7 +25,7 @@ function Sidebar({ data }){
                 borderBottom: "1px solid #eae2d6"
             }}
             >Browse real-time market terms</Typography>
-            <Form data={formDataPrefill} />
+            <Form data={formDataPrefill} updateStep={updateStep} step={step} />
         </Box>
     )
 }

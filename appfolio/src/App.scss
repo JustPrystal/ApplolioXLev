@@ -1,8 +1,8 @@
 .app{
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
     .sidebar{
-        height: calc(100vh - 168px)
+        height: 100vh;
     }
 }
 

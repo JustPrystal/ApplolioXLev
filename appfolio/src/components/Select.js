@@ -10,18 +10,14 @@ import { useState } from "react";
 // import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 function BasicSelect({title, options, value, setValue}) {
-    
+  const [open, setOpen] = useState(false);
+  
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-
-  const [open, setOpen] = useState(false);
-
-
   const handleOpenClose = () => {
     setOpen(!open);
   }
-
   const convertToHyphenatedFormat = str => str.toLowerCase().split(" ").join("-");
 
   return (
@@ -43,6 +39,7 @@ function BasicSelect({title, options, value, setValue}) {
           {title}
         </Typography>
         <Select
+          displayEmpty
           value={value}
           onChange={handleChange}
           IconComponent={() => (
@@ -60,14 +57,14 @@ function BasicSelect({title, options, value, setValue}) {
           sx={{
             borderRadius: "8px",
             border: "1px solid #e5e5e5",
-            p: "10px 14px",
             color: "#737373",
+            padding: "0",
             bgcolor: "#fff",
             fontSize : "16px",
             maxHeight: "44px",
             height: "100%",
             ">div": {
-              padding: "0"
+              p: "10px 14px",
             },
             ">fieldset": {
               border: "0"
