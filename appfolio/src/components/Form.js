@@ -22,7 +22,7 @@ function Form({data, updateStep, step}){
             // show snackbar
             return;
         }
-        updateStep()
+        updateStep(2)
     }
     return(
         <Box className="form"> 
@@ -75,6 +75,7 @@ function Form({data, updateStep, step}){
                         borderRadius: "8px", 
                         border: "1px solid #e5e5e5", 
                         mb: "24px", 
+                        boxShadow: "0 2px 15px -10px rgba(0,0,0,0.25)",
                         bgcolor: "#fff",
                     }}> 
                         <OutlinedInput 
@@ -159,7 +160,7 @@ function Form({data, updateStep, step}){
                     p: "10px 18px",
                     maxHeight: "44px",
                     height: "100%",
-
+                    boxShadow: "0 2px 15px -10px rgba(0,0,0,0.25)",
                 }} 
                 fullWidth 
                 onClick={() => handleCalculate()} 
@@ -169,7 +170,7 @@ function Form({data, updateStep, step}){
                 step == 2 && <Box className="next-step">
                 <Button className="get-financing" fullWidth color="primary"
                 variant="contained"
-                onClick={updateStep}
+                onClick={()=>updateStep(3)}
                 sx={{
                     mt: "24px",
                     color: theme.palette.primary,

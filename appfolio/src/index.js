@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import MuiPhoneNumber from 'mui-phone-number';
 
 const theme = createTheme({
   palette: {

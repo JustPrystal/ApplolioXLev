@@ -1,6 +1,5 @@
-import { Box, Button, Fade, FormControl, InputAdornment, OutlinedInput, Skeleton, Step, Table, TableBody, TableCell, TableContainer, TableRow, typographyClasses } from "@mui/material";
+import { Box, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { Typography } from "@mui/material";
-import callImage from "../assets/Lev_Illustration_Borrower 1.png";
 
 function Main ({step}) {
     return(
@@ -12,7 +11,6 @@ function Main ({step}) {
         }}>
             {step == 1 && <SkeletonTable />}
             {step == 2 && <MainTable />}
-            {step == 3 && <CallScheduler />}
         </Box>
     )
 } 
@@ -47,7 +45,11 @@ function SkeletonTable (){
             pt: "50px",
             borderRadius: "16px",
             backgroundColor: "white",
-            overflow: "hidden"
+            overflow: "hidden",
+            '@media(max-width: 1300px)' : {
+                flexDirection: "column",
+
+            }
         }}>
                 <Box className="left" sx={{
                     mb: "50px",
@@ -248,10 +250,10 @@ function MainTable (){
                                     borderTop: "0",
                                     borderBottom: index == (Object.entries(mockData).length - 1) && "0",
                                     width: "calc( 100% / 7)",
-                                    p: "12px 24px",
+                                    p: "20px 16px",
                                     fontWeight: "500",
                                     color: "#525252"
-                                }}>{row[0]}</TableCell>
+                                }} >{row[0]}</TableCell>
                                 {Object.entries(row[1]).map((cell, i) =>
                                     <TableCell key={i} sx={{
                                         border: "1px solid #eee8df",
@@ -259,8 +261,9 @@ function MainTable (){
                                         borderRight: i == (Object.entries(row[1]).length - 1) && "0",
                                         width: "calc( 100% / 7)",
                                         fontWeight: "500",
-                                        color: "#525252"
-                                    }} align="center">
+                                        color: "#525252",
+                                        p: "16px"
+                                    }} align="right">
                                         {cell[1]}
                                         {/* <Skeleton animation="wave" width={(i == 0 || i == 2) ? ((Math.random() * 30) + 10) : ((Math.random() * 70) + 30) } height={20}
                                         sx={{
@@ -286,60 +289,5 @@ function MainTable (){
     )
 }
 
-function CallScheduler(){
-    return(
-        <Box className="call-scheduler-wrap">
-            <Box className="call-scheduler" sx={{
-                maxWidth: "860px",
-                m: "0 auto",
-                backgroundColor: "#f8f5f1",
-                p: "80px 40px",
-                display: "flex",
-                justifyContent: "space-between"
-            }}>
-                <Box className="left">
-                    <Typography sx={{
-                        color: "#404040",
-                        fontFamily: "alv",
-                        fontSize: "36px"
-                    }}>Let's schedule a call, [name]</Typography>    
-                    <Typography sx={{
-                        color: "#404040",
-                        lineHeight: "1.43",
-                        mb: "32px",
-                        fontSize: "14px"
-                    }}> We'll be in touch within one business day</Typography>  
-                    <FormControl fullWidth > 
-                        <OutlinedInput 
-                        // value={loanAmount}
-                        // onChange={(event)=>{ setLoanAmount(event.target.value.replace(/\D/g, '')) }}
-                        sx={{  
-                            borderRadius: "8px", 
-                            p: "10.5px 14px",
-                            fontSize : "16px",
-                            borderRadius: "8px", 
-                            border: "1px solid #e5e5e5", 
-                            mb: "24px", 
-                            bgcolor: "#fff",
-                            ">input": {
-                              padding: "0"
-                            },
-                            ">fieldset": {
-                              border: "0"
-                            },
-                        }} 
-                            startAdornment={<InputAdornment position="start">[call icon]</InputAdornment>} 
-                        /> 
-                        <Button variant="contained" sx={{
-                            width:"175px",
-                        }}>Schedule a call</Button>
-                    </FormControl>   
-                </Box>
-                <Box className="right">
-                    <img src={callImage} alt="" />
-                </Box>
-            </Box>
-        </Box>
-    )
-}
+
 export default Main;

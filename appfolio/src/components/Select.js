@@ -47,7 +47,7 @@ function BasicSelect({title, options, value, setValue}) {
             sx={{
               transform: open ? "rotate(180deg)" : "rotate(0deg)",
               cursor: "pointer",
-              opacity: "0.55"
+              opacity: "0.55",
 
             }} />
           )}
@@ -63,6 +63,7 @@ function BasicSelect({title, options, value, setValue}) {
             fontSize : "16px",
             maxHeight: "44px",
             height: "100%",
+            boxShadow: "0 2px 15px -10px rgba(0,0,0,0.25)",
             ">div": {
               p: "10px 14px",
             },
