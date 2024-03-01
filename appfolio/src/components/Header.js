@@ -1,5 +1,4 @@
-import levLogo from '../assets/Logo.svg';
-import appfolioLogo from '../assets/appfolio-logo.png.svg';
+import Branding from "./helpers/Branding";
 
 function Header ({data}) {
     const { asset , user } = data;
@@ -7,11 +6,7 @@ function Header ({data}) {
         
         <header className="header" >
             <div className="inner">
-                <div className="logos">
-                    <img src={levLogo} alt="" className="lev-logo" />
-                    <span>x</span>
-                    <img src={appfolioLogo} alt="" className="appfolio-logo" />
-                </div>
+                <Branding />
                 <div className="user-data">
                     <div className="name-step2">{`${user.firstName} ${user.lastName}`}</div>
                     <div className="address">

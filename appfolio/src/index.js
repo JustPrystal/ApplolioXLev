@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import MuiPhoneNumber from 'mui-phone-number';
+import { SnackbarProvider } from './components/snackbar';
 
 const theme = createTheme({
   palette: {
@@ -37,7 +37,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <SnackbarProvider preventDuplicate>
+        <App />
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
