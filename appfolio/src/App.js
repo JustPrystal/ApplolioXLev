@@ -8,16 +8,15 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import LoadingScreen from './components/helpers/LoadingScreen';
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
-// const { google } = require('googleapis');
-// const keys = require('./assets/googlesheetapi.json');
+import FetchCSVData from './FetchData';
 
 function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [data, setData] = useState(null);
 
   const {enqueueSnackbar} = useSnackbar()
-
+  const csvData = FetchCSVData();
+  console.log(csvData)
   const updateStep = (num) => {
     setStep(num);
   }

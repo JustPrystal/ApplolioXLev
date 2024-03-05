@@ -185,7 +185,6 @@ function MainTable (){
             "Agency" : "75.0"
         },
     }
-    console.log(Object.entries(mockData))
 
     return(
         <Box className="main-table-wrap" >
