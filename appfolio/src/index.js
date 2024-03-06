@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { SnackbarProvider } from './components/snackbar';
+import { FormProvider } from './components/store/provider';
 
 const theme = createTheme({
   palette: {
@@ -38,7 +39,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <SnackbarProvider preventDuplicate>
-        <App />
+        <FormProvider>
+          <App />
+        </FormProvider>
       </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>

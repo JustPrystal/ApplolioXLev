@@ -4,6 +4,7 @@ import axios from 'axios';
 export default function FetchCSVData(props) {
     const [csvData, setCsvData] = useState([]);
 
+    //optimize this to not refetch data.
     useEffect(() => {
         fetchCSVData();
     }, []);

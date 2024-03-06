@@ -1,5 +1,6 @@
 import { Box, Skeleton, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import { Typography } from "@mui/material";
+import { useFormData } from "./store/provider";
 
 function Main ({step}) {
     return(
@@ -135,54 +136,58 @@ function MainTable (){
     //     x: ["Bank", "Debt Fund", "Life Co", "Credit Union", "CMBS", "Agency"],
     //     y: ["Max LTV", "Rate", "Term", "Credit Union", "CMBS", "Agency"]
     // }
+
+    const {getTableData} = useFormData();
+    const tableData = getTableData()
+    console.log(tableData);
     const mockData = {
         "Max LTV":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
         "Rate":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
         "Term":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
         "Interest Only":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
         "Amortization":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
         "Pre Pay":{
-            "Bank" : "57.5",
-            "Debt Fund" : "75.0",
-            "Life Co" : "65.0",
-            "Credit Union" : "65.0",
-            "CMBS" : "75.0",
-            "Agency" : "75.0"
+            "Bank" : "",
+            "Debt Fund" : "",
+            "Life Co" : "",
+            "Credit Union" : "",
+            "CMBS" : "",
+            "Agency" : ""
         },
     }
 
@@ -235,7 +240,7 @@ function MainTable (){
                                 </TableCell>
                             )}
                         </TableRow>
-                        {Object.entries(mockData).map((row, index)=> {
+                        {Object.entries((tableData || mockData)).map((row, index)=> {
                             return (
                             <TableRow sx={{
                                 ":nth-child(2n)": {
@@ -263,12 +268,19 @@ function MainTable (){
                                         color: "#525252",
                                         p: "16px"
                                     }} align="right">
-                                        {cell[1]}
-                                        {/* <Skeleton animation="wave" width={(i == 0 || i == 2) ? ((Math.random() * 30) + 10) : ((Math.random() * 70) + 30) } height={20}
-                                        sx={{
+                                        {cell[1] ? (
+                                        cell[1] // Render cell[1] if it exists
+                                        ) : (
+                                        <Skeleton
+                                            animation="wave"
+                                            width={(i === 0 || i === 2) ? (Math.random() * 30 + 10) : (Math.random() * 70 + 30)}
+                                            height={20}
+                                            sx={{
                                             margin: "0 auto",
                                             borderRadius: "7px"
-                                        }}></Skeleton> */}
+                                            }}
+                                        />
+                                        )}
                                     </TableCell>
                                 )}
                             </TableRow>

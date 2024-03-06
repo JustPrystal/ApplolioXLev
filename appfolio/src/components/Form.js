@@ -6,23 +6,80 @@ import { useTheme } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+import { useFormData } from "./store/provider";
+import { assetTypes, loanTypes, recourses } from "./data/constants";
 function Form({data, updateStep, step}){
     const theme = useTheme();
-
-    const [selectedAssetType, setSelectedAssetType] = useState(null);
-    const [selectedLoanType, setSelectedLoanType] = useState(data.loanType);
-    const [loanAmount , setLoanAmount] = useState(null);
-    const [recourse,  setRecourse] = useState(null);
+    const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData, getTableData} = useFormData();
     
+    const loanType = getLoanTypeData();
+    const assetType = getAssetTypeData();
+    const recourse = getRecourseData();
+    const loanAmount = getLoanAmountData();
+    
+    const csvData = getCsvData();
+
     const thousandSeparatedFormat = (value) => {
         return Number(value).toLocaleString();
     };
 
     const handleCalculate = () => {
-        if(!selectedAssetType){
-            // show snackbar
+        // conversion for keys to type
+        const localAssetType = assetTypes[assetType]['type'];
+        const localLoanType = loanTypes[loanType]['type']; 
+        const localRecourse = recourses[recourse]['type'];
+
+        if(!localAssetType || !localLoanType || !localRecourse){
+            // show error;
             return;
         }
+        const selectedRow = csvData[0]['Bank']
+        const matchedIndex = selectedRow['Loan Type'].findIndex((type, i) => type === localLoanType && selectedRow['Asset Type'][i] === localAssetType && selectedRow['Recourse'][i] === localRecourse);
+
+        const formattedData = {
+            "Max LTV":{},
+            "Rate":{},
+            "Term":{},
+            "Interest Only":{},
+            "Amortization":{},
+            "Pre Pay":{},
+        };
+        csvData.forEach(csvRow => {
+            Object.entries(csvRow).map(([name, values]) => {
+                //max ltv
+                const maxLTV = values['As-Is LTV (Max)'][matchedIndex];
+                //interest rate
+                const interestRateMin = values['Interest Rate (Min)'][matchedIndex];
+                const interestRateMax = values['Interest Rate (Max)'][matchedIndex];
+                const interestOutput = interestRateMax.trim() === interestRateMin.trim() ? interestRateMax : `${interestRateMin} - ${interestRateMax}`; 
+                //term
+                const termMin = values['Term (Min)'][matchedIndex];
+                const termMax = values['Term (Max)'][matchedIndex];
+                const termOutput = termMax.trim() === termMin.trim() ? termMax : `${termMin} - ${termMax} yrs`; 
+                //interest only
+                const IOMin = values['IO Period (Min)'][matchedIndex];
+                const IOMax = values['IO Period (Max)'][matchedIndex];
+                const IOOutput = IOMax.trim() === IOMin.trim() ? IOMax : `${IOMin} - ${IOMax} yrs`; 
+                //Amortization	
+                const amortizationMin = values['Amortization (Min)'][matchedIndex];
+                const amortizationMax = values['Amortization (Max)'][matchedIndex];
+                const amortizationOutput = amortizationMax.trim() === amortizationMin.trim() ? amortizationMax : `${amortizationMin} - ${amortizationMax} yrs`; 
+                //prepay
+                const prepay = values['Prepayment Penalty'][matchedIndex]
+
+                formattedData['Max LTV'][name] = maxLTV;
+                formattedData['Rate'][name] = interestOutput;
+                formattedData['Term'][name] = termOutput;
+                formattedData['Interest Only'][name] = IOOutput;
+                formattedData['Amortization'][name] = amortizationOutput;
+                formattedData['Pre Pay'][name] = prepay;
+
+                // console.log(name, values);
+            })
+        });
+        
+        //check if formattted data is the ame as previous submission to not do the calculation again
+        setTableData(formattedData);
         updateStep(2)
     }
     return(
@@ -53,13 +110,17 @@ function Form({data, updateStep, step}){
                 }}>
                     <BasicSelect title="Asset Type" 
                         options={assetTypes}
-                        value={selectedAssetType}
-                        setValue={(value) => setSelectedAssetType(value)}
+                        value={assetType}
+                        setValue={(value) => {
+                            setAssetTypeData(value);
+                        }}
                     />
                     <BasicSelect title="Loan Type" 
                         options={loanTypes}
-                        value={selectedLoanType}
-                        setValue={(value) => setSelectedLoanType(value)}
+                        value={loanType}
+                        setValue={(value) => {
+                            setLoanTypeData(value)
+                        }}
                     />
                     <Typography
                     sx={{
@@ -81,7 +142,7 @@ function Form({data, updateStep, step}){
                     }}> 
                         <OutlinedInput 
                         value={thousandSeparatedFormat(loanAmount)}
-                        onChange={(event)=>{ setLoanAmount(event.target.value.replace(/\D/g, '')) }}
+                        onChange={(event)=>{ setLoanAmountData(event.target.value.replace(/\D/g, '')) }}
                         sx={{  
                             borderRadius: "8px", 
                             p: "10.5px 14px",
@@ -95,8 +156,7 @@ function Form({data, updateStep, step}){
                         }} 
                             startAdornment={<InputAdornment position="start">$</InputAdornment>} 
                         /> 
-                    </FormControl> 
-
+                    </FormControl>    
                 </Box>
                 <Box className="recourse">
                     <Typography 
@@ -117,12 +177,12 @@ function Form({data, updateStep, step}){
                         {
                           recourses && Object.entries(recourses).map(([key , {label, type}])=>(
                               <Button 
-                                value={type.toLowerCase()}
+                                value={type}
                                 key={key}
                                 color="primary" 
                                 variant={recourse === key ? "contained" : "outlined"}
                                 onClick={(event) => {
-                                    setRecourse(key)
+                                    setRecourseData(key);
                                 }}
                                 sx={{
                                   letterSpacing: "-0.5px",
@@ -146,7 +206,7 @@ function Form({data, updateStep, step}){
                 borderBottom: "1px solid #eae2d6",
             }}>
                 <LoadingButton  
-                disabled={!selectedAssetType || !selectedLoanType || !loanAmount || !recourse} 
+                disabled={!assetType || !loanType || !loanAmount || !recourse} 
                 variant="outlined" 
                 sx={{
                     color: "#404040",
@@ -195,140 +255,6 @@ function Form({data, updateStep, step}){
     )
 }
 
-const assetTypes = {
-    "land_development": {
-        label: 'Land/Development',
-        type: 'Land'
-    },
-    "mixed_use_mutifamily": {
-        label: 'Mixed Use (Multifamily/Retail)',
-        type: 'Multi'
-    },
-    "industrial": {
-        label: 'Industrial',
-        type: 'Industrial'
-    },
-    "cold_storage": {
-        label: 'Cold Storage',
-        type: 'Industrial'
-    },
-    "data_center": {
-        label: 'Data Center',
-        type: 'Industrial'
-    },
-    "anchored_retail": {
-        label: 'Anchored Retail',
-        type: 'Retail'
-    },
-    "nnn_retail": {
-        label: 'NNN Retail',
-        type: 'Retail'
-    },
-    "specialty": {
-        label: 'Specialty',
-        type: 'Specialty'
-    },
-    "parking_garage": {
-        label: 'Parking Garage',
-        type: 'Specialty'
-    },
-    "cannabis": {
-        label: 'Cannabis',
-        type: 'Retail'
-    },
-    "1_4_residential": {
-        label: '1-4 Residential',
-        type: 'SFR'
-    },
-    "hospitality_hotel": {
-        label: 'Hospitality/Hotel',
-        type: 'Hospitality'
-    },
-    "multifamily": {
-        label: 'Multifamily',
-        type: 'Multi'
-    },
-    "fractured_condo": {
-        label: 'Fractured Condo',
-        type: 'Multi'
-    },
-    "mobile_home_parks": {
-        label: 'Mobile Home Parks',
-        type: 'Multi'
-    },
-    "student_housing": {
-        label: 'Student Housing',
-        type: 'Multi'
-    },
-    "senior_housing": {
-        label: 'Senior Housing',
-        type: 'Senior Housing'
-    },
-    "nursing_homes": {
-        label: 'Nursing Homes',
-        type: 'Senior Housing'
-    },
-    "office": {
-        label: 'Office',
-        type: 'Office'
-    },
-    "medical_office": {
-        label: 'Medical Office',
-        type: 'Office'
-    },
-    "mixed_use_office": {
-        label: 'Mixed Use (Office/Retail)',
-        type: 'Office'
-    },
-    "retail": {
-        label: 'Retail',
-        type: 'Retail'
-    },
-    "self_storage": {
-        label: 'Self-Storage',
-        type: 'Industrial'
-    },
-    "single_family_portfolio": {
-        label: 'Single Family Portfolio',
-        type: 'SFR'
-    }
-};
-const loanTypes = {
-    "permanent-financing": {
-        label: 'Permanent Financing',
-        type: 'Permanent'
-    },
-    "light-value-add": {
-        label: 'Light Value-Add',
-        type: 'Bridge'
-    },
-    "redevelopment": {
-        label: 'Redevelopment',
-        type: 'Bridge'
-    },
-    "construction": {
-        label: 'Construction',
-        type: 'Construction'
-    },
-    "pre-development": {
-        label: 'Pre-Development',
-        type: 'Construction'
-    }
-};
-const recourses = {
-    "personal-recourse": {
-        label: 'Personal Recourse',
-        type: 'Recourse'
-    },
-    "fund-recourse": {
-        label: 'Fund Recourse',
-        type: 'Recourse'
-    },
-    "no-recourse": {
-        label: 'No Recourse',
-        type: 'Non-recourse'
-    }
-}
 
 
 

@@ -9,17 +9,21 @@ import { useEffect, useState } from 'react';
 import LoadingScreen from './components/helpers/LoadingScreen';
 import { useSnackbar } from 'notistack';
 import FetchCSVData from './FetchData';
+import { useFormData } from './components/store/provider';
 
 function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [data, setData] = useState(null);
 
-  const {enqueueSnackbar} = useSnackbar()
   const csvData = FetchCSVData();
-  console.log(csvData)
+  
+  const {enqueueSnackbar} = useSnackbar()
+  const {setCsvData} = useFormData();
+
   const updateStep = (num) => {
     setStep(num);
   }
+
 
   useEffect(() => {
     const currentUrl = new URL(window.location.toLocaleString());
@@ -39,10 +43,17 @@ function App() {
     }else{
       enqueueSnackbar("An error occurred while processing the link. Please try again later.", { variant: 'error' });
       setData(null);
-    }
-
+    } 
   }, [])
   
+  useEffect(() => {
+    if(!csvData){
+      // CSV Data not available show error
+      enqueueSnackbar("Error getting csv details", {variant: 'error'});
+      return;
+    }
+    setCsvData(csvData);
+  }, [csvData])
 
   return (
     <div className="app">

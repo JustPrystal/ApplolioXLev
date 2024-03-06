@@ -1,9 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
 import Confetti from 'react-confetti'
+import { useFormData } from "./store/provider";
 
 function Thanks ({data}){
     const {user} = data;
 
+    const {getLoanTypeData, getAssetTypeData, getRecourseData, getLoanAmountData} = useFormData();
+    const loanType = getLoanTypeData();
+    const assetType = getAssetTypeData();
+    const recourse = getRecourseData();
+    const loanAmount = getLoanAmountData();
+    
     return(
         <Box className="thanks" sx={{
             height: "100vh",
@@ -35,6 +42,14 @@ function Thanks ({data}){
                 mb: "44px",
 
             }}>Someone from our team will be in touch shortly</Typography>
+            <Typography sx={{
+                fontFamily: "alv-md",
+                lineHeight:"1.26",
+                color: "#737373",
+                fontSize: "30px",
+                mb: "44px",
+
+            }}>{assetType + " " + loanType + " " + loanAmount + " " + recourse}</Typography>
             <Button variant="contained"  className="learn-more" href="https://www.lev.co/"
             sx={{
                 borderRadius: "8px",
