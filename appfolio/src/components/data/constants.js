@@ -132,3 +132,11 @@ export const recourses = {
         type: 'Non-recourse'
     }
 }
+export const mockData = [
+    { name: "Bank" },
+    { name: "Debt Funds" },
+    { name: "Life Co" },
+    { name: "Credit unions" },
+    { name: "Agencies" },
+    { name: "CMBS" },
+];

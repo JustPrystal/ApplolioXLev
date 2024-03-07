@@ -19,7 +19,7 @@ function CallScheduler({ data, updateStep, step }) {
   const { user } = data;
   const theme = useTheme();
 
-  const [phoneNum, setPhoneNum] = useState("");
+  const [phoneNum, setPhoneNum] = useState(null);
   const handleChange = (event) => {
     let formattedPhoneNumber = event.target.value.replace(/\D/g, '');
 
@@ -42,6 +42,7 @@ function CallScheduler({ data, updateStep, step }) {
 
     // Update the state with the formatted phone number
     setPhoneNum(formatted);
+    
   };
 
   return (
@@ -50,6 +51,10 @@ function CallScheduler({ data, updateStep, step }) {
       className="call-scheduler-wrap"
       sx={{
         mt: "66px",
+        mx: "20px",
+        '@media(max-width: 767px)':{
+          m: "20px"
+        }
       }}
     >
       <Box
@@ -62,6 +67,12 @@ function CallScheduler({ data, updateStep, step }) {
           display: "flex",
           borderRadius: "16px",
           justifyContent: "space-between",
+          '@media(max-width: 767px)':{
+            flexDirection: "column-reverse",
+            gap: "30px",
+            alignItems: "center",
+            p: "40px"
+          }
         }}
       >
         <Box className="left">
@@ -115,6 +126,7 @@ function CallScheduler({ data, updateStep, step }) {
             <Button
               variant="contained"
               onClick={() => updateStep(4)}
+              disabled={(phoneNum && phoneNum.length === 17) ? false : true}
               sx={{
                 width: "175px",
                 color: theme.palette.primary,
@@ -134,8 +146,8 @@ function CallScheduler({ data, updateStep, step }) {
             </Button>
           </FormControl>
         </Box>
-        <Box className="right">
-          <img src={callImage} alt="" />
+        <Box className="right" >
+          <img src={callImage} alt=""/>
         </Box>
       </Box>
     </Box>

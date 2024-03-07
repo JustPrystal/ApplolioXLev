@@ -1,11 +1,43 @@
 .app{
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    &.overflow-visible{
+        overflow-y: auto;
+    }
+    &.overflow-hidden{
+        overflow-y: hidden;
+    }
     .sidebar{
-        height: 100vh;
+        @media(max-width: 767px){
+            width: 100%;
+            position: fixed;
+            max-width: unset;
+            z-index: 2;
+            transition: left 500ms ease-in-out;
+            &.open{
+                left: 0%;
+                .toggle-button{
+                    // display: none;
+                }
+            }
+            &.close{
+                box-shadow: 5px 0 15px -11px rgba($color: #000000, $alpha: 0.2);
+                left: -100%;
+                border-left: 0;
+                .toggle-button{
+                    // display: block;
+                }
+            }
+        }
     }
 }
-
+*,::after, ::before{
+    box-sizing: border-box;
+}
+html{
+    overflow-x: hidden
+}
 //fonts
 @import "./fonts/_fonts";
 

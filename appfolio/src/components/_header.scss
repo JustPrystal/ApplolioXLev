@@ -8,6 +8,10 @@ header{
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+        @media (max-width: 767px){
+            padding: 20px;
+            flex-direction: column;
+        }
 
         .user-data{
             .name-step2{
@@ -16,16 +20,25 @@ header{
             .address{
                 font-family: alv-sb;   
                 font-size: 20px;   
+                @media (max-width: 767px) {
+                    font-size: 16px;    
+                }
             }
             .creds{
                 .name{
                     font-family: alv;
                     font-size: 14px;
+                    @media (max-width: 767px) {
+                        font-size: 12px;    
+                    }
                 }
                 .email{
                     font-family: alv-lt;
                     font-size: 14px;
                     color: $lightgray;
+                    @media (max-width: 767px) {
+                        font-size: 12px;    
+                    }
                 }
             }
         }
@@ -36,4 +49,15 @@ header{
     display: flex;
     align-items: center;
     grid-gap:30px;
+    @media (max-width: 767px) {
+        align-self: center;
+        margin-bottom: 20px;
+        grid-gap: 10px;
+        .lev-logo{
+            width: 70px;
+        }
+        .appfolio-logo{
+            width: 40px;
+        }
+    }
 }

@@ -40,7 +40,7 @@ function Thanks ({data}){
                 color: "#737373",
                 fontSize: "30px",
                 mb: "44px",
-
+                textAlign: "center"
             }}>Someone from our team will be in touch shortly</Typography>
             <Button variant="contained"  className="learn-more" href="https://www.lev.co/"
             sx={{

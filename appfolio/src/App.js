@@ -12,8 +12,13 @@ import FetchCSVData from './FetchData';
 import { useFormData } from './components/store/provider';
 
 function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [data, setData] = useState(null);
+  const [overflow, setOverflow] = useState(false);
+
+  const toggleOverflow = () => {
+    setOverflow(!overflow);
+  };
 
   const csvData = FetchCSVData();
   
@@ -56,17 +61,20 @@ function App() {
   }, [csvData])
 
   return (
-    <div className="app">
+    <div className={`app ${overflow ? "overflow-visible" : "overflow-hidden"}`}>
       {data ? (
         <>
           {(step === 1 || step === 2 || step === 3) && <Box className="app-wrap">
             <Header data={data}/>
             {( step === 1 || step === 2 ) && 
-            <Box sx={{ display: "flex"}}>
-              <Sidebar data={data} updateStep={updateStep} step={step}/>
-              <Main step={step} />
+            <Box sx={{ 
+              display: "flex",
+              position: "relative"
+            }}>
+              <Sidebar data={data} updateStep={updateStep} step={step} toggleOverflow={toggleOverflow}/>
+              <Main step={step} updateStep={updateStep} />
             </Box> }
-            {step === 3 && <CallScheduler data={data} updateStep={updateStep} step={step}/>}
+            {step === 3 && <CallScheduler data={data} updateStep={updateStep} step={step } />}
           </Box>}
           {step === 4 && <Thanks data={data} />}
         </>

@@ -8,7 +8,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useFormData } from "./store/provider";
 import { assetTypes, loanTypes, recourses } from "./data/constants";
-function Form({data, updateStep, step}){
+function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
     const theme = useTheme();
     const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData, getTableData} = useFormData();
     
@@ -80,6 +80,8 @@ function Form({data, updateStep, step}){
         
         //check if formattted data is the ame as previous submission to not do the calculation again
         setTableData(formattedData);
+        toggleDrawer()
+        toggleOverflow()
         updateStep(2)
     }
     return(
@@ -228,7 +230,12 @@ function Form({data, updateStep, step}){
                 >Calculate</LoadingButton>           
             </Box>
             {
-                step == 2 && <Box className="next-step">
+                step == 2 && <Box className="next-step" sx={{
+                    display: "block",
+                    '@media(max-width:767px)':{
+                        display: "none"
+                    }
+                }}>
                 <Button className="get-financing" fullWidth color="primary"
                 variant="contained"
                 onClick={()=>updateStep(3)}
