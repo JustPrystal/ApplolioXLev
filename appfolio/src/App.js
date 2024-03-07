@@ -10,11 +10,15 @@ import LoadingScreen from './components/helpers/LoadingScreen';
 import { useSnackbar } from 'notistack';
 import FetchCSVData from './FetchData';
 import { useFormData } from './components/store/provider';
+import {assetTypes, loanTypes} from './components/data/constants';
+
 
 function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [data, setData] = useState(null);
   const [overflow, setOverflow] = useState(false);
+
+  const {setLoanTypeData, setAssetTypeData} = useFormData();
 
   const toggleOverflow = () => {
     setOverflow(!overflow);
@@ -38,6 +42,20 @@ function App() {
     if(URLData){
       try{
         const JSONData = JSON.parse(atob(URLData));
+        if(JSONData.asset.type){
+          const assetType = getKeyByValue(assetTypes, JSONData.asset.type);
+          if(assetType){
+            setAssetTypeData(assetType);
+          }
+        }
+        if(JSONData.formDataPrefill.loanType){
+          const loanType = getKeyByValue(loanTypes, JSONData.formDataPrefill.loanType);
+          if(loanType){
+            setLoanTypeData(loanType);
+          }
+        }
+        // if(JSONData.)
+
         setData(JSONData);
       }catch(error){
         console.log(error);
@@ -59,6 +77,17 @@ function App() {
     }
     setCsvData(csvData);
   }, [csvData])
+
+  function getKeyByValue(dataType, value) {
+    for (const key in dataType) {
+        if (dataType.hasOwnProperty(key)) {
+            if (dataType[key].label === value) {
+                return key;
+            }
+        }
+    }
+    return null; // Return null if value not found
+  }
 
   return (
     <div className={`app ${overflow ? "overflow-visible" : "overflow-hidden"}`}>
