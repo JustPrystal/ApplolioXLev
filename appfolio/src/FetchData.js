@@ -36,7 +36,7 @@ export default function FetchCSVData(props) {
     
 
     const fetchCSVData = () => {
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJzDpfdIB-Vqbew0N_M1HBnBEQdQuMwgvzIRFPpCyKYk_ACmmZTcb6VG_8WuLIVkRoHQBpdq50iVzg/pub?output=csv'; // Replace with your Google Sheets CSV file URL
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQqYdRlRecxtRHekTUZk8-g8vdr9eVqFxuuI1HWtJbw6SN-L5aGFrEPB4HRcJzsuNeQF7Ztj6-6lUKP/pub?output=csv'; // Replace with your Google Sheets CSV file URL
         axios.get(csvUrl)
             .then((response) => {
                 const parsedCsvData = parseCSV(response.data);
