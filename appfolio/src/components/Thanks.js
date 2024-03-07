@@ -1,16 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
 import Confetti from 'react-confetti'
-import { useFormData } from "./store/provider";
+
 
 function Thanks ({data}){
     const {user} = data;
-
-    const {getLoanTypeData, getAssetTypeData, getRecourseData, getLoanAmountData} = useFormData();
-    const loanType = getLoanTypeData();
-    const assetType = getAssetTypeData();
-    const recourse = getRecourseData();
-    const loanAmount = getLoanAmountData();
-    
     return(
         <Box className="thanks" sx={{
             height: "100vh",
