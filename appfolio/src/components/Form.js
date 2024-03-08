@@ -1,17 +1,17 @@
-import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputAdornment, OutlinedInput, } from "@mui/material";
 import { Typography } from "@mui/material";
 import BasicSelect from "./helpers/Select";
-import { useState } from "react";
 import { useTheme } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LoadingButton from '@mui/lab/LoadingButton';
+// import { WebClient } from '@slack/web-api';
 
 import { useFormData } from "./store/provider";
 import { assetTypes, loanTypes, recourses } from "./data/constants";
+import axios from "axios";
 function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
     const theme = useTheme();
-    const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData, getTableData} = useFormData();
-    
+    const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData} = useFormData();
     const loanType = getLoanTypeData();
     const assetType = getAssetTypeData();
     const recourse = getRecourseData();
@@ -22,6 +22,30 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
     const thousandSeparatedFormat = (value) => {
         return Number(value).toLocaleString();
     };
+
+    function sendMessageToSlack() {
+        // Define the URL of your proxy server endpoint
+        const proxyUrl = 'http://localhost:3001/slack-proxy'; // Update with your proxy server URL
+    
+        // Define the message payload
+        const payload = {
+            text: `New lead: 
+            Asset Type = ${assetType},
+            Loan Type = ${loanType}, 
+            Loan Amount = ${loanAmount}, 
+            Recourse = ${recourse}`
+        };
+    
+        // Make the HTTP POST request to the proxy server
+        axios.post(proxyUrl, payload)
+            .then(response => {
+                console.log('Message sent to Slack successfully');
+            })
+            .catch(error => {
+                console.error('Error sending message to Slack:', error);
+            });
+    }
+
 
     const handleCalculate = () => {
         // conversion for keys to type
@@ -230,7 +254,7 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                 >Calculate</LoadingButton>           
             </Box>
             {
-                step == 2 && <Box className="next-step" sx={{
+                step === 2 && <Box className="next-step" sx={{
                     display: "block",
                     '@media(max-width:767px)':{
                         display: "none"
@@ -238,7 +262,11 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                 }}>
                 <Button className="get-financing" fullWidth color="primary"
                 variant="contained"
-                onClick={()=>updateStep(3)}
+                onClick={()=>{
+                    updateStep(3)
+                    sendMessageToSlack()
+                }
+                }
                 sx={{
                     mt: "24px",
                     color: theme.palette.primary,

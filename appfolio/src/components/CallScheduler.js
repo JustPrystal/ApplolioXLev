@@ -4,7 +4,6 @@ import {
   FormControl,
   InputAdornment,
   OutlinedInput,
-  TextField,
   Typography,
 } from "@mui/material";
 import callImage from "../assets/Lev_Illustration_Borrower 1.png";
@@ -12,7 +11,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CallIcon from "../assets/CallIcon.svg";
 import { useState } from "react";
 import { useTheme } from '@mui/material/styles';
-import { CSSTransition } from 'react-transition-group';
 
 
 function CallScheduler({ data, updateStep, step }) {
@@ -106,7 +104,6 @@ function CallScheduler({ data, updateStep, step }) {
                 boxShadow: "0 2px 15px -10px rgba(0,0,0,0.25)",
                 p: "10.5px 14px",
                 fontSize: "16px",
-                borderRadius: "8px",
                 border: "1px solid #e5e5e5",
                 mb: "24px",
                 bgcolor: "#fff",
