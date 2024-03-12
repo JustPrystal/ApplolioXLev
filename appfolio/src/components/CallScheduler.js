@@ -11,11 +11,23 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CallIcon from "../assets/CallIcon.svg";
 import { useState } from "react";
 import { useTheme } from '@mui/material/styles';
+import { useFormData } from "./store/provider";
 
 
-function CallScheduler({ data, updateStep, step }) {
+function CallScheduler({ send, data, updateStep, step }) {
   const { user } = data;
   const theme = useTheme();
+  const {getLoanTypeData, getAssetTypeData, getRecourseData, getLoanAmountData} = useFormData();
+  const loanType = getLoanTypeData();
+  const assetType = getAssetTypeData();
+  const recourse = getRecourseData();
+  const loanAmount = getLoanAmountData();
+
+  let message = `_*Hot lead*_: 
+  Asset Type = ${assetType},
+  Loan Type = ${loanType}, 
+  Loan Amount = ${loanAmount}, 
+  Recourse = ${recourse}`;
 
   const [phoneNum, setPhoneNum] = useState(null);
   const handleChange = (event) => {
@@ -122,7 +134,10 @@ function CallScheduler({ data, updateStep, step }) {
             />
             <Button
               variant="contained"
-              onClick={() => updateStep(4)}
+              onClick={() => {
+                send(message)
+                updateStep(4)
+              }}
               disabled={(phoneNum && phoneNum.length === 17) ? false : true}
               sx={{
                 width: "175px",

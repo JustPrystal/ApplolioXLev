@@ -4,12 +4,11 @@ import BasicSelect from "./helpers/Select";
 import { useTheme } from '@mui/material/styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LoadingButton from '@mui/lab/LoadingButton';
-// import { WebClient } from '@slack/web-api';
-
 import { useFormData } from "./store/provider";
 import { assetTypes, loanTypes, recourses } from "./data/constants";
 import axios from "axios";
-function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
+
+function Form({send, data, updateStep, step, toggleDrawer, toggleOverflow}){
     const theme = useTheme();
     const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData} = useFormData();
     const loanType = getLoanTypeData();
@@ -23,28 +22,12 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
         return Number(value).toLocaleString();
     };
 
-    function sendMessageToSlack() {
-        // Define the URL of your proxy server endpoint
-        const proxyUrl = 'http://localhost:3001/slack-proxy'; // Update with your proxy server URL
+    let message = `_*Warm lead*_: 
+    Asset Type = ${assetType},
+    Loan Type = ${loanType}, 
+    Loan Amount = ${loanAmount}, 
+    Recourse = ${recourse}`
     
-        // Define the message payload
-        const payload = {
-            text: `New lead: 
-            Asset Type = ${assetType},
-            Loan Type = ${loanType}, 
-            Loan Amount = ${loanAmount}, 
-            Recourse = ${recourse}`
-        };
-    
-        // Make the HTTP POST request to the proxy server
-        axios.post(proxyUrl, payload)
-            .then(response => {
-                console.log('Message sent to Slack successfully');
-            })
-            .catch(error => {
-                console.error('Error sending message to Slack:', error);
-            });
-    }
 
 
     const handleCalculate = () => {
@@ -264,7 +247,7 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                 variant="contained"
                 onClick={()=>{
                     updateStep(3)
-                    sendMessageToSlack()
+                    send(message)
                 }
                 }
                 sx={{

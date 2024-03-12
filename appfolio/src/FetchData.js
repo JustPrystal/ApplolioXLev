@@ -6,7 +6,7 @@ export default function FetchCSVData(props) {
 
     //optimize this to not refetch data.
     useEffect(() => {
-        fetchCSVData();
+         fetchCSVData();
     }, []);
 
     function parseCSV(csvText) {

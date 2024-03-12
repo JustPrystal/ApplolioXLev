@@ -4,7 +4,7 @@ import Form from "./Form"
 import { useState } from "react";
 import ArrowIcon from '@mui/icons-material/KeyboardArrowDown';
 
-function Sidebar({ data, updateStep, step, overflow, toggleOverflow}){
+function Sidebar({ send, data, updateStep, step, overflow, toggleOverflow}){
 
     const { formDataPrefill } = data;
     const [isOpen, setIsOpen] = useState(true);
@@ -74,7 +74,7 @@ function Sidebar({ data, updateStep, step, overflow, toggleOverflow}){
                         fontSize: "36px"
                     }} />
                 </Box>
-                <Form data={formDataPrefill} toggleDrawer={toggleDrawer} updateStep={updateStep} step={step} toggleOverflow={toggleOverflow}/>
+                <Form data={formDataPrefill} send={send} toggleDrawer={toggleDrawer} updateStep={updateStep} step={step} toggleOverflow={toggleOverflow}/>
             </Box>
         </Box>
     )
