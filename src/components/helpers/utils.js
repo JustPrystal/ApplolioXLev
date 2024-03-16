@@ -2,16 +2,14 @@ import axios from "axios";
 import {recourses} from "../data/constants";
 
 let id = null;
-
 export function sendMessageToSlack(message, timestamp, update=false) {
     // Define the URL of your Express backend endpoint
-    const expressUrl = 'http://localhost:3001/slack-proxy'; // Update with your Express server URL
+    const expressUrl = `${process.env.REACT_APP_BACKEND_API_URL}/${update ? 'slack-update' : 'slack-write'}`; 
 
     const payload = {
         channel: 'C06N8FSPJT1', // Update with your Slack channel ID
         text: message,
         ts: id,
-        update: update
     };
 
     return new Promise((resolve, reject) => {
