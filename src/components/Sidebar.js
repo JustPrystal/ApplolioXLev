@@ -6,7 +6,6 @@ import ArrowIcon from '@mui/icons-material/KeyboardArrowDown';
 
 function Sidebar({ send, data, updateStep, step, overflow, toggleOverflow}){
 
-    const { formDataPrefill } = data;
     const [isOpen, setIsOpen] = useState(true);
     const toggleDrawer = () => {
         setIsOpen(!isOpen);
@@ -74,7 +73,7 @@ function Sidebar({ send, data, updateStep, step, overflow, toggleOverflow}){
                         fontSize: "36px"
                     }} />
                 </Box>
-                <Form data={formDataPrefill} send={send} toggleDrawer={toggleDrawer} updateStep={updateStep} step={step} toggleOverflow={toggleOverflow}/>
+                <Form data={data} send={send} toggleDrawer={toggleDrawer} updateStep={updateStep} step={step} toggleOverflow={toggleOverflow}/>
             </Box>
         </Box>
     )

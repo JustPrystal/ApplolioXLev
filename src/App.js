@@ -11,7 +11,8 @@ import { useSnackbar } from 'notistack';
 import FetchCSVData from './FetchData';
 import { useFormData } from './components/store/provider';
 import {assetTypes, loanTypes} from './components/data/constants';
-import axios from 'axios';
+
+import { sendDataToSlackIfChanged, handleLead, getCookies } from './components/helpers/utils';
 
 
 function App() {
@@ -29,56 +30,6 @@ function App() {
     setOverflow(!overflow);
   };
   
-  function sendMessageToSlack(message) {
-    // Define the URL of your Express backend endpoint
-    const expressUrl = 'http://localhost:3001/slack-proxy'; // Update with your Express server URL
-
-    const payload = {
-        channel: 'C06N8FSPJT1', // Update with your Slack channel ID
-        text: message
-    };
-
-    // Make the HTTP POST request to the Express backend
-    axios.post(expressUrl, payload)
-        .then(response => {
-            console.log('Message sent to Slack successfully');
-        })
-        .catch(error => {
-            console.error('Error sending message to Slack:', error);
-        });
-  }
-  function sendDataToSlackIfChanged(data) {
-    // Get the stored data from cookies
-    const storedData = getCookies('storedData');
-
-    // Check if stored data is different from new data
-    if (storedData !== JSON.stringify(data)) {
-        // Update stored data in cookies
-        setCookie('storedData', JSON.stringify(data));
-        // Send message to Slack
-        sendMessageToSlack(data);
-    } else {
-        console.log('Data is unchanged. Skipping message to Slack.');
-    }
-}
-
-// Function to get cookie value by name
-function getCookies(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-// Function to set cookie value
-function setCookie(name, value) {
-    document.cookie = `${name}=${value}; path=/`;
-}
-
-function resetCookiesAfterHalfHour() {
-  setInterval(() => {
-      setCookie('storedData', '', 0); // Reset stored data cookie
-  }, 30 * 60 * 1000); // 30 minutes in milliseconds
-}
   const csvData = FetchCSVData();
   
   const {enqueueSnackbar} = useSnackbar()
@@ -94,7 +45,7 @@ function resetCookiesAfterHalfHour() {
     if(URLData){
       try{
         const JSONData = JSON.parse(atob(URLData));
-        if(JSONData.asset.type){
+        if(JSONData.asset.type) {
           const assetType = getKeyByValue(assetTypes, JSONData.asset.type);
           if(assetType){
             setAssetTypeData(assetType);
@@ -106,9 +57,16 @@ function resetCookiesAfterHalfHour() {
             setLoanTypeData(loanType);
           }
         }
-     
-        sendDataToSlackIfChanged(JSONData.user.firstName)
-        resetCookiesAfterHalfHour()
+        let existingLead = getCookies('leadData');
+        if(!existingLead){
+          handleLead(JSONData, "cold");
+          sendDataToSlackIfChanged();
+        }else{
+          if(JSON.stringify(JSON.parse(existingLead).data) !== JSON.stringify(JSONData)){
+            handleLead(JSONData, "cold");
+            sendDataToSlackIfChanged();
+          }
+        }
         setData(JSONData);
       }catch(error){
         console.log(error);

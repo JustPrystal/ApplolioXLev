@@ -6,9 +6,9 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useFormData } from "./store/provider";
 import { assetTypes, loanTypes, recourses } from "./data/constants";
-import axios from "axios";
+import { getCookies, handleLead, sendDataToSlackIfChanged } from "./helpers/utils";
 
-function Form({send, data, updateStep, step, toggleDrawer, toggleOverflow}){
+function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
     const theme = useTheme();
     const {setLoanTypeData , getLoanTypeData, setAssetTypeData, getCsvData, getAssetTypeData, setRecourseData, getRecourseData, setLoanAmountData, getLoanAmountData, setTableData} = useFormData();
     const loanType = getLoanTypeData();
@@ -21,14 +21,6 @@ function Form({send, data, updateStep, step, toggleDrawer, toggleOverflow}){
     const thousandSeparatedFormat = (value) => {
         return Number(value).toLocaleString();
     };
-
-    let message = `_*Warm lead*_: 
-    Asset Type = ${assetType},
-    Loan Type = ${loanType}, 
-    Loan Amount = ${loanAmount}, 
-    Recourse = ${recourse}`
-    
-
 
     const handleCalculate = () => {
         // conversion for keys to type
@@ -246,10 +238,16 @@ function Form({send, data, updateStep, step, toggleDrawer, toggleOverflow}){
                 <Button className="get-financing" fullWidth color="primary"
                 variant="contained"
                 onClick={()=>{
-                    updateStep(3)
-                    send(message)
-                }
-                }
+                    let existingLead = getCookies("leadData");
+                    if((recourse !== JSON.parse(existingLead).recourse) || 
+                    (loanAmount !== JSON.parse(existingLead).loanAmount)){
+                        const leadIsTrue = handleLead(data, 'warm', {loanAmount, recourse});
+                        if (leadIsTrue){
+                            sendDataToSlackIfChanged();
+                        }
+                    }
+                    updateStep(3);
+                }}
                 sx={{
                     mt: "24px",
                     color: theme.palette.primary,

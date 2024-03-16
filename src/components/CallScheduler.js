@@ -12,6 +12,7 @@ import CallIcon from "../assets/CallIcon.svg";
 import { useState } from "react";
 import { useTheme } from '@mui/material/styles';
 import { useFormData } from "./store/provider";
+import { getCookies, handleLead, sendDataToSlackIfChanged } from "./helpers/utils";
 
 
 function CallScheduler({ send, data, updateStep, step }) {
@@ -135,7 +136,13 @@ function CallScheduler({ send, data, updateStep, step }) {
             <Button
               variant="contained"
               onClick={() => {
-                send(message)
+                let existingLead = getCookies("leadData");
+                if((phoneNum !== JSON.parse(existingLead).phoneNum)){
+                    const leadIsTrue = handleLead(data, 'hot', {phoneNum});
+                    if (leadIsTrue){
+                        sendDataToSlackIfChanged();
+                    }
+                }
                 updateStep(4)
               }}
               disabled={(phoneNum && phoneNum.length === 17) ? false : true}
