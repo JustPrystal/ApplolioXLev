@@ -13,7 +13,7 @@ app.post('/slack-write', async (req, res) => {
     try {
         const response = await axios.post('https://slack.com/api/chat.postMessage', req.body, {
             headers: {
-                'Authorization': process.env.REACT_APP_SLACK_TOKEN, // Update with your Slack API token
+                'Authorization': process.env.SLACK_TOKEN, // Update with your Slack API token
                 'Content-Type': 'application/json'
             }
         });
@@ -29,7 +29,7 @@ app.post('/slack-update', async (req, res) => {
     try {
         const response = await axios.post('https://slack.com/api/chat.update', req.body, {
             headers: {
-                'Authorization': process.env.REACT_APP_SLACK_TOKEN, // Update with your Slack API token
+                'Authorization': process.env.SLACK_TOKEN, // Update with your Slack API token
                 'Content-Type': 'application/json'
             }
         });
