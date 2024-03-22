@@ -63,7 +63,8 @@ function App() {
           sendDataToSlackIfChanged();
         }else{
           if(JSON.stringify(JSON.parse(existingLead).data) !== JSON.stringify(JSONData)){
-            handleLead(JSONData, "cold");
+            
+            handleLead(JSONData, "cold", {}, false);
             sendDataToSlackIfChanged();
           }
         }

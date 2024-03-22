@@ -49,6 +49,12 @@ header{
     display: flex;
     align-items: center;
     grid-gap:30px;
+    .lev-logo{
+        width: 93px;
+    }
+    .appfolio-logo{
+        width: 81px;
+    }
     @media (max-width: 767px) {
         align-self: center;
         margin-bottom: 20px;

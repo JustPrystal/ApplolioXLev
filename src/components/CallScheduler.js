@@ -87,6 +87,22 @@ function CallScheduler({ send, data, updateStep, step }) {
         }}
       >
         <Box className="left">
+          <Button sx={{
+            fontSize: "14px",
+            lineHeight: "1.43",
+            color: theme.palette.primary,
+            textTransform: "capitalize",
+          }}
+            onClick={() => {
+              updateStep(2)
+            }}>
+            <ArrowForwardIcon sx={{
+              pl:"5px", 
+              width: "23px",
+              transform: "rotate(180deg)"
+              }}/>
+            Back
+          </Button>
           <Typography
             sx={{
               color: "#404040",

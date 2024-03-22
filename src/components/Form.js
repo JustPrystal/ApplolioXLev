@@ -181,7 +181,6 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                                 value={type}
                                 key={key}
                                 color="primary" 
-                                variant={recourse === key ? "contained" : "outlined"}
                                 onClick={(event) => {
                                     setRecourseData(key);
                                 }}
@@ -194,8 +193,8 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                                   lineHeight: "1.3",
                                   borderColor: "#EAE2D6",
                                   borderRadius: "8px",
-                                  color: recourse === key ? "#ffffff" : "#404040",
-                                  border: recourse === key && `1px solid ${theme.palette.secondary.main}`
+                                  color: recourse === key ? `${theme.palette.secondary.main}` : `#404040`,
+                                  border: recourse === key ? `1px solid ${theme.palette.secondary.main}` : `1px solid #EAE2D6`
                                 }}>{label}</Button>
                             )
                           )  
@@ -239,8 +238,10 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                 variant="contained"
                 onClick={()=>{
                     let existingLead = getCookies("leadData");
+                    console.log(JSON.parse(existingLead))
                     if((recourse !== JSON.parse(existingLead).recourse) || 
-                    (loanAmount !== JSON.parse(existingLead).loanAmount)){
+                    (loanAmount !== JSON.parse(existingLead).loanAmount)
+                    ){
                         const leadIsTrue = handleLead(data, 'warm', {loanAmount, recourse});
                         if (leadIsTrue){
                             sendDataToSlackIfChanged();

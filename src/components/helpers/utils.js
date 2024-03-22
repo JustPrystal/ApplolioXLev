@@ -76,21 +76,29 @@ export function sendMessageToSlack(message, timestamp, update=false) {
   }
 
 
-  export function handleLead(data, type, other) {
+  export function handleLead(data, type, other, isSameLead = true) {
     let existingLead = getCookies('leadData');
     let dataObject = null;
     if(existingLead){
       existingLead = JSON.parse(existingLead);
         
         dataObject ={
+          timestamp: id,
+          data: data, 
+          slackMessageStatus: true,
+          leadType:type,
+          loanAmount: existingLead?.loanAmount,
+          recourse: existingLead?.recourse,
+          phoneNum: existingLead?.phoneNum,
+          ...other
+        }
+        if(!isSameLead){
+          dataObject={
             timestamp: id,
-            data: existingLead.data, 
-            slackMessageStatus:true,
+            data: data, 
+            slackMessageStatus: false,
             leadType:type,
-            loanAmount: existingLead?.loanAmount,
-            recourse: existingLead?.recourse,
-            phoneNum: existingLead?.phoneNum,
-            ...other
+          }
         }
 
     }else{
@@ -104,7 +112,6 @@ export function sendMessageToSlack(message, timestamp, update=false) {
       }
     }
 
-    console.log(dataObject)
     setCookie('leadData', JSON.stringify(dataObject));
     return true;
   }
@@ -117,3 +124,14 @@ export function sendMessageToSlack(message, timestamp, update=false) {
   export function setCookie(name, value) {
       document.cookie = `${name}=${value}; path=/`;
   }
+
+
+
+//<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+// <script>
+//   hbspt.forms.create({
+//     region: "na1",
+//     portalId: "20956331",
+//     formId: "55aa3844-557b-4b60-bb65-99d7e05b2fb5"
+//   });
+// </script>

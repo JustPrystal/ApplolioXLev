@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import levLogo from '../../assets/Logo.svg';
-import appfolioLogo from '../../assets/appfolio-logo.svg';
+import appfolioLogo from '../../assets/appfolio-logo.png';
 
 export default function Branding ({justifyContent}){
     return(
