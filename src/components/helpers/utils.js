@@ -71,7 +71,7 @@ export function sendMessageToSlack(message, timestamp, update=false) {
     `Expenses Spent To Date: ${data.data.formDataPrefill.expensesSpentToDate}\n` +
     `Desired Leverage: ${data.data.formDataPrefill.desiredLeverage}\n\n` +
     `${data.loanAmount ? `Loan Amount: ${data.loanAmount}\n` : ''}` +
-    `${data.recourse ? `Recourse: ${recourses[data.recourse]["label"]}\n` : ''}` +
+    `${data.recourse ? `Recourse: ${data.recourse}\n` : ''}` +
     `${data.phoneNum ? `Phone Number: ${data.phoneNum}\n` : ''}\n\`\`\``;
   }
 

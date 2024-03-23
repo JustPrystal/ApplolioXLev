@@ -1,4 +1,6 @@
 import { createContext, useContext, useState } from "react";
+import { getCookies, setCookie } from "../helpers/utils";
+import { assetTypes, loanTypes, recourses } from "../data/constants";
 
 const FormContext = createContext();
 
@@ -15,15 +17,30 @@ export const FormProvider = ({children}) => {
     //setters
     const setLoanTypeData = (value) => {
         setLoanType(value)
+        if(getCookies("leadData")){
+            let existingLead = JSON.parse(getCookies("leadData"));
+            existingLead.data.formDataPrefill.loanType = loanTypes[value]["label"];
+            setCookie("leadData", JSON.stringify(existingLead))
+        }
     }
     const setAssetTypeData = (value) => {
         setAssetType(value)
+        if(getCookies("leadData")){
+            let existingLead = JSON.parse(getCookies("leadData"));
+            existingLead.data.asset.type = assetTypes[value]["label"];
+            setCookie("leadData", JSON.stringify(existingLead))
+        }
     }
     const setLoanAmountData = (value) => {
         setLoanAmount(value)
     }
     const setRecourseData = (value) => {
         setRecourse(value)
+        if(getCookies("leadData")){
+            let existingLead = JSON.parse(getCookies("leadData"));
+            existingLead.recourse = recourses[value]["label"];
+            setCookie("leadData", JSON.stringify(existingLead))
+        }
     }
     const setCsvData = (value) => {
         setCsv(value);

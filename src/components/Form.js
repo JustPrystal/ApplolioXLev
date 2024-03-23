@@ -15,11 +15,14 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
     const assetType = getAssetTypeData();
     const recourse = getRecourseData();
     const loanAmount = getLoanAmountData();
-    
     const csvData = getCsvData();
 
     const thousandSeparatedFormat = (value) => {
-        return Number(value).toLocaleString();
+        if(!value){
+            return "";
+        }else{
+            return Number(value).toLocaleString();
+        }
     };
 
     const handleCalculate = () => {
@@ -89,20 +92,15 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
             sx = {{
                 mb: " 16px",
             }}>
-                <Typography 
-                sx = {{
-                    fontFamily: "alv",
-                    fontSize: "20px",
-                    pb: " 8px",
-                }}
-                >Refine Calculations</Typography>
+
                 <Typography 
                 sx = {{
                     fontSize: "14px",
                     color: "#737373",
                     letterSpacing: "-0.5px",
                 }}
-                >Use this to automatically update prequalified lending terms.</Typography>
+                >Refine Calculations and automatically update prequalified lending terms.
+                </Typography>
             </Box>
             <Box className="form-options">
                 <Box className="fields"
@@ -240,9 +238,11 @@ function Form({data, updateStep, step, toggleDrawer, toggleOverflow}){
                     let existingLead = getCookies("leadData");
                     console.log(JSON.parse(existingLead))
                     if((recourse !== JSON.parse(existingLead).recourse) || 
-                    (loanAmount !== JSON.parse(existingLead).loanAmount)
+                    (loanAmount !== JSON.parse(existingLead).loanAmount) ||
+                    (assetType !== JSON.parse(existingLead).data.asset.type) ||
+                    (loanType !== JSON.parse(existingLead).data.formDataPrefill.loanType)
                     ){
-                        const leadIsTrue = handleLead(data, 'warm', {loanAmount, recourse});
+                        const leadIsTrue = handleLead(JSON.parse(existingLead).data, 'warm', {loanAmount});
                         if (leadIsTrue){
                             sendDataToSlackIfChanged();
                         }

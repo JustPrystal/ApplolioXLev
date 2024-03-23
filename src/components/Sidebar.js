@@ -43,11 +43,9 @@ function Sidebar({ send, data, updateStep, step, overflow, toggleOverflow}){
                 <Typography 
                 sx = {{
                     fontFamily: "alv-md",
-                    fontSize: "28px",
-                    pb: "18px",
-                    mb: "24px",
-                    lineHeight: "0.9",
-                    borderBottom: "1px solid #eae2d6"
+                    fontSize: "24px",
+                    mb: "12px",
+                    lineHeight: "1.25",
                 }}
                 >Browse real-time market terms</Typography>
                 <Box className="toggle-button" sx={{

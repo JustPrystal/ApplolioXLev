@@ -47,7 +47,6 @@ function BasicSelect({title, options, value, setValue}) {
             sx={{
               transform: open ? "rotate(180deg)" : "rotate(0deg)",
               cursor: "pointer",
-              opacity: "0.85",
               mr: "10px"
             }} />
           )}
