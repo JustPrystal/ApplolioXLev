@@ -11,7 +11,6 @@ export function sendMessageToSlack(message, timestamp, update=false) {
         text: message,
         ts: id,
     };
-
     return new Promise((resolve, reject) => {
         axios({
             method: "POST",
@@ -127,11 +126,3 @@ export function sendMessageToSlack(message, timestamp, update=false) {
 
 
 
-//<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
-// <script>
-//   hbspt.forms.create({
-//     region: "na1",
-//     portalId: "20956331",
-//     formId: "55aa3844-557b-4b60-bb65-99d7e05b2fb5"
-//   });
-// </script>

@@ -5,10 +5,8 @@ const cors = require('cors'); // Import the cors middleware
 
 const app = express();
 const PORT = 3001;
-
 app.use(express.json());
 app.use(cors()); // Use the cors middleware
-
 app.post('/slack-write', async (req, res) => {
     try {
         const response = await axios.post('https://slack.com/api/chat.postMessage', req.body, {

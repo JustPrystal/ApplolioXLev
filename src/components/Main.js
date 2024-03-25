@@ -34,13 +34,7 @@ function SkeletonTable() {
     const mockDataWithRandomWidths = useMemo(() => {
         return mockData.map(item => ({
             ...item,
-            widths: Array.from({ length: 6 }, (_, i) => {
-                if (i === 0 || i === 2) {
-                    return (Math.random() * 30) + 10;
-                } else {
-                    return (Math.random() * 70) + 30;
-                }
-            })
+            widths: [37.141059807828626,92.61812969798561,37.141059807828626,50.7691634109517,36.818836903026025,72.46763405529238],
         }));
     }, [mockData]);
 
@@ -66,7 +60,7 @@ function SkeletonTable() {
             }}>
                 <Typography className="heading"
                     sx={{
-                        fontFamily: "alv",
+                        fontFamily: "alv-md",
                         color: "#171717",
                         lineHeight: "1.166",
                         fontSize: "24px",
@@ -160,49 +154,49 @@ function MainTable ({step, updateStep}){
     const mockData = {
         "Max LTV":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },
         "Rate":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },
         "Term":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },
         "Interest Only":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },
         "Amortization":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },
         "Pre Pay":{
             "Bank" : "",
+            "Credit Union" : "",
             "Debt Fund" : "",
             "Life Co" : "",
-            "Credit Union" : "",
             "CMBS" : "",
             "Agency" : ""
         },

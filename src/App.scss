@@ -46,3 +46,11 @@ html{
 
 //components
 @import "./components/_header";
+
+
+.hbspt-form{
+    position: absolute;
+    top: 0;
+    background: white;
+    left: 50%;
+}
